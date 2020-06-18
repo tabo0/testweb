@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <package name="basicstruts" namespace="/" extends="struts-default">
+        <action name="success" class="testAction" method="success">
+            <result name="success">success.jsp</result>
+        </action>
+        <action name="find" class="testAction" method="find">
+            <result name="success">success.jsp</result>
+        </action>
+        <action name="findfollow" class="mainAction" method="findfollow">
+            <result name="success">success.jsp</result>
+        </action>
+        <action name="AIsfollowB" class="mainAction" method="AIsfollowB">
+            <result name="success">success.jsp</result>
+        </action>
+        <action name="fans" class="mainAction" method="fans">
+            <result name="success">success.jsp</result>
+        </action>
+        <action name="write" class="mainAction" method="write">
+            <result name="success">success.jsp</result>
+        </action>
+        <action name="delete" class="mainAction" method="delete">
+            <result name="success">success.jsp</result>
+        </action>
+    </package>
+</struts>
