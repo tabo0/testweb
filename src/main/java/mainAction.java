@@ -42,16 +42,19 @@ public class mainAction {
     }
 
     public String findfollow() throws Exception {
-        String t="user";
+        String t="user1";
         opration opration = new opration();
         opration.initconnection();
         List<User> list = null ;
         list=opration.find_family(t,id,"follow");
+        for(User u : list){
+            u.init();
+        }
         ActionContext.getContext().put("list", list);
         return "success";
     }
     public String AIsfollowB() throws Exception {
-        String t="user";
+        String t="user1";
         opration opration = new opration();
         opration.initconnection();
         Boolean ans=opration.AisfollowB(t,idA,idB);
@@ -64,16 +67,19 @@ public class mainAction {
         return "success";
     }
     public String fans() throws Exception {
-        String t="user";
+        String t="user1";
         opration opration = new opration();
         opration.initconnection();
         List<User> list = null ;
         list=opration.find_family(t,id,"fans");
+        for(User u : list){
+            u.init();
+        }
         ActionContext.getContext().put("list", list);
         return "success";
     }
     public String write() throws Exception {
-        String t="user";
+        String t="user1";
         opration opration = new opration();
         opration.initconnection();
         List<User> list = null ;
@@ -81,7 +87,7 @@ public class mainAction {
         return "success";
     }
     public String delete() throws Exception {
-        String t="user";
+        String t="user1";
         opration opration = new opration();
         opration.initconnection();
         List<User> list = null ;

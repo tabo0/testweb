@@ -31,21 +31,19 @@
 </head>
 <body>
 <div class="container mar">
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
         <tr >
-            <th>row</th>
-            <th>timestamp</th>
-            <th>family</th>
-            <th>qualifier</th>
-            <th>value</th>
+            <th>行键</th>
+            <th>列族</th>
+            <th>id</th>
+            <th>姓名</th>
         </tr>
         </thead>
         <tbody >
         <s:iterator value="list" status="li">
             <tr>
             <td> <s:property value="rowKey"/> </td>
-                <td><s:property value="timestamp"/> </td>
                 <td><s:property value="family"/> </td>
                 <td> <s:property value="qualifier"/> </td>
                 <td> <s:property value="value"/> </td>

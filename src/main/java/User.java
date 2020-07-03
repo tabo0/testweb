@@ -10,6 +10,10 @@ public class User {
     User(){
 
     }
+    public void init(){
+        if(family.equals("follow")) family="关注:";
+        else family="粉丝:";
+    }
     User(String a, long b, String c, String d, String e){
         rowKey=a;
         timestamp=b;

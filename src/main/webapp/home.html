@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <script src="js/jquery.columns-2.0.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+    <a class="navbar-brand" href="#">Hbase</a>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#">微博系统</a>
+        </li>
+    </ul>
+</nav>
+<br>
+<div class="container">
+    <h2>微博数据管理</h2>
+    <p></p>
+    <ul class="nav nav-tabs">
+        <li class="nav-item ">
+            <a class="nav-link  active" data-toggle="tab" href="#p1">我的关注</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab"href="#p2">是否关注</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab"href="#p3">我的粉丝</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab"href="#p4">添加关注</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab"href="#p5">取消关注</a>
+        </li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+
+
+        <div class="tab-pane active nav-tabs" id="p1">
+            <div class="container mt-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="查询一个用户关注了谁？" id="name">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" onclick="return submit()">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="p2">
+            <p></p>
+            <h5>用户 A 关注了用户 B 吗?</h5>
+            <p></p>
+            <form>
+                <div class="form-group">
+                    <label for="name">用户A id</label>
+                    <input type="text" class="form-control" id="idA" >
+                    <label for="name">用户B id</label>
+                    <input type="text" class="form-control" id="idB" >
+                </div>
+
+            </form>
+            <button  class="btn btn-primary" onclick="return AisfollowB()">提交</button>
+        </div>
+
+
+        <div class="tab-pane fade " id="p3">
+            <div class="container mt-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="谁关注了用户 A？" id="id">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" onclick="return fans()">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="p4">
+            <p></p>
+            <h5>用户 A 关注用户 B</h5>
+            <p></p>
+            <form>
+                <div class="form-group">
+                    <label for="writeA">用户A id</label>
+                    <input type="text" class="form-control" id="writeA" >
+                    <label for="writeB">用户B id</label>
+                    <input type="text" class="form-control" id="writeB" >
+                </div>
+
+            </form>
+            <button  class="btn btn-primary" onclick="return Write()">提交</button>
+        </div>
+
+
+
+        <div class="tab-pane fade" id="p5">
+            <p></p>
+            <h5>用户 A 取消关注用户 B</h5>
+            <p></p>
+            <form>
+                <div class="form-group">
+                    <label for="deleteA">用户A id</label>
+                    <input type="text" class="form-control" id="deleteA" >
+                    <label for="deleteB">用户B id</label>
+                    <input type="text" class="form-control" id="deleteB" >
+                </div>
+
+            </form>
+            <button  class="btn btn-primary" onclick="return Delete()">提交</button>
+        </div>
+
+
+
+
+    </div>
+
+
+</div>
+
+<div id="content">
+
+</div>
+
+<div id="columns"></div>
+<script>
+    $(document).ready(function() {
+        var json = [{"col1":"row1", "col2":"row1", "col3":"row1"}, {"col1":"row2", "col2":"row2", "col3":"row2"}];
+        $('#columns').columns({data:json});
+    });
+</script>
+<script>
+    function  submit(){ //前端js查询关注了谁
+        var name =$('#name').val();
+        if(name.length ==0 ||name.length>30){
+            alert('输入长度不符合!');
+            return false;
+        }
+        var divshow = $("#content");
+        divshow.text("正在查询中，请耐心等待...");
+        var con = {
+            id:name,flag:'findFollow',
+        };
+        var path="http://localhost:8080/"
+        path="http://119.3.167.84:8080/testweb/"
+        $.post(path+'findfollow',con,function(data){
+            var divshow = $("#content");
+            divshow.text("");// 清空数据
+            divshow.append(data);
+        });
+        //window.location.href = "job_title.php";
+    }
+
+    function  AisfollowB(){
+        var idA =$('#idA').val();
+        var idB =$('#idB').val();
+        if(idA.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        if(idB.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        var divshow = $("#content");
+        divshow.text("正在查询中，请耐心等待...");
+        var con = {
+            idA:idA,idB:idB,flag:"AIsfollowB",
+        };
+        var path="http://localhost:8080/"
+        path="http://119.3.167.84:8080/testweb/"
+        $.post(path+'AIsfollowB',con,function(data){
+            var divshow = $("#content");
+            divshow.text("");// 清空数据
+            divshow.append(data);
+        });
+        //window.location.href = "job_title.php";
+    }
+
+    function  fans(){
+        var id =$('#id').val();
+        if(id.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        var divshow = $("#content");
+        divshow.text("正在查询中，请耐心等待...");
+        var con = {
+            id:id,flag:"fans",
+        };
+        var path="http://localhost:8080/"
+        path="http://119.3.167.84:8080/testweb/"
+        $.post(path+'fans',con,function(data){
+            var divshow = $("#content");
+            divshow.text("");// 清空数据
+            divshow.append(data);
+        });
+        //window.location.href = "job_title.php";
+    }
+
+    function  Write(){
+        var idA =$('#writeA').val();
+        var idB =$('#writeB').val();
+        if(idA.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        if(idB.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        var divshow = $("#content");
+
+        divshow.text("正在写入中，请耐心等待...");
+        var con = {
+            idA:idA,idB:idB,flag:"write",
+        };
+        var path="http://localhost:8080/"
+        path="http://119.3.167.84:8080/testweb/"
+        $.post(path+'write',con,function(data){
+            var divshow = $("#content");
+            divshow.text("关注成功！");// 清空数据
+        });
+        //window.location.href = "job_title.php";
+    }
+    function Delete(){
+        var idA =$('#deleteA').val();
+        var idB =$('#deleteB').val();
+        if(idA.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        if(idB.length ==0 ){
+            alert('输入长度不符合!');
+            return false;
+        }
+        var divshow = $("#content");
+        divshow.text("正在修改中，请耐心等待...");
+        var con = {
+            idA:idA,idB:idB,flag:"delete",
+        };
+        var path="http://localhost:8080/"
+        path="http://119.3.167.84:8080/testweb/"
+        $.post(path+'delete',con,function(data){
+            var divshow = $("#content");
+            divshow.text("取消关注成功！");// 清空数据
+        });
+        //window.location.href = "job_title.php";
+    }
+</script>
+</body>
+</html>
